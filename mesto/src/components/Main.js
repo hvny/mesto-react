@@ -18,7 +18,8 @@ function Main(props){
         })
         .catch(err => console.log(err));       
     }, [userName, userDescription, userAvatar, cards]);
-    
+
+
     return(
         <main>
             <section className="profile">
@@ -36,15 +37,13 @@ function Main(props){
             <section className="elements">
                 {cards.map((card)=>(
                     <Card 
+                        card = {card}
+                        onCardClick = {props.onCardClick}
                         key = {card._id}
-                        link = {card.link}
-                        name = {card.name}
-                        likes = {card.likes.length}
                     />
                 ))}
             </section>
         </main>
-        
     )
 }
 
