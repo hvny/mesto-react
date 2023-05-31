@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import React from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -6,11 +6,12 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 
 function App() {
-    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false);
-    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-    const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
-    const [selectedCard, setSelectedCard] = useState({});
+
+    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = React.useState(false);
+    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+    const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+    const [selectedCard, setSelectedCard] = React.useState({});
 
     function handleEditProfileClick(){
         setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -52,6 +53,7 @@ function App() {
             name = "edit-profile" 
             isOpen = {isEditProfilePopupOpen} 
             title = "Редактировать профиль" 
+            buttonText = "Сохранить"
             onClose = {closeAllPopups}
         >
             <input type="text" name="name" autoComplete="off" placeholder="Имя" className="popup__input" id="profileNameInput" minLength="2" maxLength="40" required />
@@ -76,6 +78,7 @@ function App() {
             name = "edit-avatar" 
             isOpen = {isEditAvatarPopupOpen} 
             title = "Обновить автар" 
+            buttonText = "Сохранить"  
             onClose = {closeAllPopups}
         >
             <input type="url" name="avatar" autoComplete="off" placeholder="Ссылка на картинку" className="popup__input" id="avatarInput" required />
@@ -95,6 +98,7 @@ function App() {
             onClose = {closeAllPopups}
             isOpen = {isImagePopupOpen}
         />
+
     </div>
   );
 }
