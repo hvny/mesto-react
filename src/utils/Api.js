@@ -68,22 +68,22 @@ class Api {
             .then(res => this._checkForError(res));
     }
 
-    /*ставим лайк*/
-    putLike(cardId) {
-        return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-                method: "PUT",
+    /*ставим и убираем лайк*/
+    changeLikeCardStatus(cardId, isLiked){
+        if(!isLiked){
+            return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+                method: 'DELETE',
                 headers: this._headers,
             })
-            .then(res => this._checkForError(res));
-    }
-
-    /*убираем лайк*/
-    deleteLike(cardId) {
-        return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-                method: "DELETE",
+            .then(res => this._checkForError(res))
+        }
+        else{
+            return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+                method: 'PUT',
                 headers: this._headers,
             })
-            .then(res => this._checkForError(res));
+            .then(res => this._checkForError(res))
+        }
     }
 
     /*проверка на ошибку*/

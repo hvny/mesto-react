@@ -1,44 +1,32 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useContext} from 'react';
 import { api } from "../utils/Api"; 
 import Card from "./Card";
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Main(props){
-    const [userName, setUserName] = useState("");
-    const [userDescription, setUserDescription] = useState("");
-    const [userAvatar, setUserAvatar] = useState("");    
-    const [cards, setCards] = useState([]);
-
-    useEffect(()=>{
-        Promise.all([api.getUserInfo(), api.getInitialCards()])
-        .then(([userData, cardData])=>{
-            setUserName(userData.name);
-            setUserDescription(userData.about);
-            setUserAvatar(userData.avatar);
-            setCards(cardData);
-        })
-        .catch(err => console.log(err));       
-    }, []);
+function Main(props){ 
+    const currentUser = useContext(CurrentUserContext);
 
     return(
         <main>
             <section className="profile">
                 <div className="profile__avatar-container">
-                    <div style={{backgroundImage: `url(${userAvatar})`}} className="profile__avatar" onClick={props.onEditAvatar}></div>
+                    <div style={{backgroundImage: `url(${currentUser.avatar})`}} className="profile__avatar" onClick={props.onEditAvatar}></div>
                 </div>
                 <div className="profile__info">
-                    <h1 className="profile__name">{userName}</h1>
+                    <h1 className="profile__name">{currentUser.name}</h1>
                     <button type="button" className="profile__button_type_edit profile__button" onClick={props.onEditProfile}></button>
-                    <h2 className="profile__status">{userDescription}</h2>
+                    <h2 className="profile__status">{currentUser.about}</h2>
                 </div>
                 <button type="button" className="profile__button_type_add profile__button" onClick={props.onAddPlace}></button>
             </section>
-
-            <section className="elements">
-                {cards.map((card)=>(
+            <section className="elements">  
+                {props.cards.map((card)=>(
                     <Card 
                         card = {card}
                         onCardClick = {props.onCardClick}
                         key = {card._id}
+                        onCardLike = {props.onCardLike}
+                        onCardDelete = {props.onCardDelete}
                     />
                 ))}
             </section>
