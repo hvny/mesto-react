@@ -19,6 +19,7 @@ function App() {
     const [selectedCard, setSelectedCard] = useState({});
     const [currentUser, setCurrentUser] = useState({});
     const [cards, setCards] = useState([]);
+    const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isImagePopupOpen;
 
     useEffect(()=>{     //получаем карточки и ифну юзера при монтировании
         Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -26,8 +27,22 @@ function App() {
             setCurrentUser(userData);
             setCards(cardsData);
         })
-        .catch(err => console.log(err));
+        .catch(console.error);
     }, []);
+
+    useEffect(() => {
+        function closeByEscape(evt) {
+          if(evt.key === 'Escape') {
+            closeAllPopups();
+          }
+        }
+        if(isOpen) {
+          document.addEventListener('keydown', closeByEscape);
+          return () => {
+            document.removeEventListener('keydown', closeByEscape);
+          }
+        }
+    }, [isOpen]); 
 
     function handleEditProfileClick(){      //открываем попап изменения профиля
         setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -61,7 +76,7 @@ function App() {
         .then((newCard) => {
             setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
-        .catch(err=>console.log(err));
+        .catch(console.error);
     } 
 
     function handleCardDelete(card){        //удаляем карточку
@@ -69,7 +84,7 @@ function App() {
         .then(()=>{
             setCards((state)=> state.filter((c)=> c._id !== card._id));
         })
-        .catch(err=>console.log(err));
+        .catch(console.error);
     }
 
     function handleUpdateUser(newInfo){        //обновляем инфу юзера
@@ -78,7 +93,7 @@ function App() {
             setCurrentUser(userData);
             closeAllPopups();
         })
-        .catch(err=>console.log(err));
+        .catch(console.error);
     }
     
     function handleUpdateAvatar(newAvatar){     //обновляем аватар
@@ -87,7 +102,7 @@ function App() {
             setCurrentUser(userData);
             closeAllPopups();
         })
-        .catch(err=>console.log(err));
+        .catch(console.error);
     }
 
     function handleAddPlaceSubmit(placeInfo){
@@ -96,7 +111,7 @@ function App() {
             setCards([cardData, ...cards]);
             closeAllPopups();
         })
-        .catch(err=>console.log(err));
+        .catch(console.error);
     }
 
     return (
