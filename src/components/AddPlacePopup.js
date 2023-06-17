@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup(props){
     const [placeName, setPlaceName] = useState("");
     const [placeLink, setPlaceLink] = useState("");
+
+    useEffect(()=>{
+        setPlaceName("");
+        setPlaceLink("");
+    }, [props.isOpen])
 
     function handlePlaceNameChange(evt){
         setPlaceName(evt.target.value);
@@ -30,9 +35,9 @@ function AddPlacePopup(props){
             onClose = {props.onClose}
             onSubmit = {handleSubmit}
         >
-            <input type="text" name="name" value="" onChange={handlePlaceNameChange} autoComplete="off" placeholder="Название" className="popup__input" id="placeNameInput" minLength="2" maxLength="30" required />
+            <input type="text" name="name" value={placeName} onChange={handlePlaceNameChange} autoComplete="off" placeholder="Название" className="popup__input" id="placeNameInput" minLength="2" maxLength="30" required />
             <span className="placeNameInput-error popup__input-error"> </span>
-            <input type="url" name="link" value="" onChange={handlePlaceLinkChange} autoComplete="off" placeholder="Ссылка на картинку" className="popup__input" id="placeLinkInput" required />
+            <input type="url" name="link" value={placeLink} onChange={handlePlaceLinkChange} autoComplete="off" placeholder="Ссылка на картинку" className="popup__input" id="placeLinkInput" required />
             <span className="placeLinkInput-error popup__input-error"> </span>  
         </PopupWithForm>
     );
